@@ -44,7 +44,8 @@ class PingServiceBehavior extends ModelBehavior {
             $options = array(
                                 'name' => Configure::read('Site.title'),
                                 'website' => Router::url('/', true),
-                                'url' => Router::url($model->data['Node']['path'], true)
+                                'url' => Router::url($model->data['Node']['path'], true),
+                                'feed' => Router::url('/nodes/promoted.rss', true)
                             );
             $this->ping($options);
         }
@@ -59,7 +60,7 @@ class PingServiceBehavior extends ModelBehavior {
         
         $type = 'REST';
         if (function_exists('xmlrpc_encode_request')) {
-            //$type = 'XML-RPC';
+            $type = 'XML-RPC';
         }
 
         switch ($type) {
@@ -80,7 +81,7 @@ class PingServiceBehavior extends ModelBehavior {
 
              case 'XML-RPC':
                     // construct parameters
-                    $params = array($options['name'], $options['website'], $options['url']);
+                    $params = array($options['name'], $options['website'], $options['url'], $options['feed']);
                     $request = xmlrpc_encode_request("weblogUpdates.extendedPing", $params);
 
                     $context = stream_context_create(array('http' => array(
@@ -94,7 +95,7 @@ class PingServiceBehavior extends ModelBehavior {
                         $file = file_get_contents($endPoint, false, $context);
                         $response = xmlrpc_decode($file); //no need to process the response
                     }
-                    
+
                  break;
         }
     }
