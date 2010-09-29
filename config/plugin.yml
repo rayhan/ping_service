@@ -1,0 +1,10 @@
+name: Plugin Service
+description: Updates ping servers when a content is created or updated.
+
+author: Md. Rayhan Chowdhury
+authorEmail: ray@raynux.com
+authorUrl: http://raynux.com
+
+dependencies:
+  plugins:
+    - extensions
